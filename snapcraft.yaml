@@ -1,0 +1,33 @@
+name: moos-ivp
+version: '17.7'
+summary: MOOS-IvP Marine Autonomy suite
+description: |
+  MOOS-IvP is a set of open source C++ modules for providing autonomy on
+  robotic platforms, in particular autonomous marine vehicles.
+
+grade: stable
+confinement: strict
+
+parts:
+  moos-ivp:
+    plugin: cmake
+    source: https://oceanai.mit.edu/svn/moos-ivp-aro/releases/moos-ivp-17.7
+    source-type: svn
+    build: |
+      ./build-moos.sh
+      ./build-ivp.sh
+    install: |
+      cp -r bin $SNAPCRAFT_PART_INSTALL/
+      mkdir -p $SNAPCRAFT_PART_INSTALL/lib
+      cp build/MOOS/MOOSGeodesy/lib/libMOOSGeodesy.so $SNAPCRAFT_PART_INSTALL/lib
+      cp lib/libhenrik_anneal.so $SNAPCRAFT_PART_INSTALL/lib
+    build-packages:
+      - g++
+      - libfltk1.3-dev
+      - freeglut3-dev
+      - libpng12-dev
+      - libjpeg-dev
+      - libxft-dev
+      - libxinerama-dev
+      - libtiff5-dev
+    after: [desktop-gtk3]
